@@ -14,7 +14,7 @@ public interface HoaDonService {
 
     Optional<HoaDon> findById(int id);
 
-    Page<HoaDon> search(String thoiGian, int trangThai, Pageable pageable);
+    Page<HoaDon> search(Date batDau, Date ketThuc, Integer trangThai, Pageable pageable);
 
     Optional<HoaDon> save(HoaDon hoaDon);
 

@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 @RestController
@@ -34,17 +37,18 @@ public class HoaDonController {
         return ResponseEntity.ok(hangHoas);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> search(@RequestParam(name = "thoiGian", required = false, defaultValue = "2021-08-21") String thoiGian,
-                                    @RequestParam(name = "trangThai", required = false, defaultValue = "1") int trangThai,
+    @GetMapping("/search") // search theo 3 thông số bắt đầu, kết thúc, trạng thái hoá đơn
+    public ResponseEntity<?> search(@RequestParam(name = "batDau",required = false, defaultValue = "2021-01-01")Date batDau,
+                                    @RequestParam(name = "ketThuc",required = false, defaultValue = "2021-12-31") Date ketThuc,
+                                    @RequestParam(name = "trangThai", required = false) Integer trangThai,
                                     @RequestParam(name = "page", required = false, defaultValue = "1") Integer page,
                                     @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
         Pageable pageable = PageRequest.of(page - 1, size);
-        Page<HoaDon> hoaDons = hoaDonService.search(thoiGian, trangThai, pageable);
+        Page<HoaDon> hoaDons = hoaDonService.search(batDau, ketThuc, trangThai, pageable);
         return ResponseEntity.ok(hoaDons);
     }
 
-    @PostMapping("/save")   //      bao gồm thông tin hóa đơn, danh sách hóa đơn chi tiết, khách hàng id, nhân viên id
+    @PostMapping("/save")   //   hoaDonDTO   bao gồm thông tin hóa đơn, danh sách hóa đơn chi tiết, khách hàng id, nhân viên id
     public ResponseEntity<?> save(@RequestBody HoaDonDTO hoaDon1,
                                   @RequestParam("khach_hang_id") int khachHangId,
                                   @RequestParam("nhan_vien_id") int nhanVienId) {

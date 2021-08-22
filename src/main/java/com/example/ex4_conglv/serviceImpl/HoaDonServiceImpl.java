@@ -30,10 +30,9 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public Page<HoaDon> search(String thoiGian, int trangThai, Pageable pageable) {
+    public Page<HoaDon> search(Date batDau, Date ketThuc, Integer trangThai, Pageable pageable) {
         try {
-
-            return hoaDonRepo.search(thoiGian,trangThai, pageable);
+            return hoaDonRepo.search(batDau, ketThuc ,trangThai, pageable);
 
         } catch (Exception e) {
             return Page.empty();
